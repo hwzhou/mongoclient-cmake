@@ -1,0 +1,24 @@
+CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
+
+SET(BOOST_DETAIL_SRC utf8_codecvt_facet.cpp)
+
+ADD_LIBRARY(boost_detail ${BOOST_TARGET_TYPE} ${BOOST_DETAIL_SRC})
+
+SET_TARGET_PROPERTIES(boost_detail PROPERTIES
+                      OUTPUT_NAME "${BOOST_TARGET_LIBRARY_PREFIX}boost_detail${BOOST_TARGET_LIBRARY_SUFFIX_RELEASE}"
+                      DEBUG_OUTPUT_NAME "${BOOST_TARGET_LIBRARY_PREFIX}boost_detail${BOOST_TARGET_LIBRARY_SUFFIX_DEBUG}"
+)
+
+SET(Boost_BUILTIN_LIBS 
+    ${Boost_BUILTIN_LIBS} 
+    boost_detail 
+    PARENT_SCOPE
+)
+
+# Install.
+INSTALL(TARGETS boost_detail
+        RUNTIME DESTINATION bin
+        LIBRARY DESTINATION lib
+        ARCHIVE DESTINATION lib
+        COMPONENT boost_libraries
+)

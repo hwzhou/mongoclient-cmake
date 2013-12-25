@@ -1,0 +1,24 @@
+CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
+
+SET(BOOST_SYSTEM_SRC src/error_code.cpp)
+
+ADD_LIBRARY(boost_system ${BOOST_TARGET_TYPE} ${BOOST_SYSTEM_SRC})
+
+SET_TARGET_PROPERTIES(boost_system PROPERTIES
+                      OUTPUT_NAME "${BOOST_TARGET_LIBRARY_PREFIX}boost_system${BOOST_TARGET_LIBRARY_SUFFIX_RELEASE}"
+                      DEBUG_OUTPUT_NAME "${BOOST_TARGET_LIBRARY_PREFIX}boost_system${BOOST_TARGET_LIBRARY_SUFFIX_DEBUG}"
+)
+
+SET(Boost_BUILTIN_LIBS 
+    ${Boost_BUILTIN_LIBS} 
+    boost_system 
+    PARENT_SCOPE
+)
+
+# Install.
+INSTALL(TARGETS boost_system
+        RUNTIME DESTINATION bin
+        LIBRARY DESTINATION lib
+        ARCHIVE DESTINATION lib
+        COMPONENT boost_libraries
+)
