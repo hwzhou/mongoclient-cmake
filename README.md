@@ -19,7 +19,7 @@ Boost_NO_BOOST_CMAKE -- If you encounter errors related to BOOST, set it to ON a
 ```
 3. [OpenSSL](http://www.openssl.org)：This package uses *FindOpenSSL.cmake* to find OpenSSL libraries. If found, declares **MONGO_SSL** and uses OpenSSL.
 4. class RCString：In *mongo/util/intrusive_counter.h*, this class overloads *operator new()* and *operator delete()*. VC will emit warnings about one argument form of *operator delete()*, and GCC 4.8 will emit errors about two arguments form of *operator delete()*. So I made the following changes.
-```  
+```
 #if defined(_MSC_VER)  
     void operator delete (void* ptr, size_t realSize) ...  
 #else  
@@ -27,7 +27,7 @@ Boost_NO_BOOST_CMAKE -- If you encounter errors related to BOOST, set it to ON a
 #endif  
 ```
 5. VC warnings: This package disabled the following VC warnings: C4996,C4800,C4244.  When we try to build shared MongoDB client library. VC will emit the following warnings as well: C4251,C4275. The former warning means our codes try to export class members, but those members' classes are not exported, it is disabled in the project settings. The latter means our classes inherited from a non-export class. This warning is also disabled in the header files like this:
-```  
+```
 #if defined(_MSC_VER)  
 #pragma warning(disable: 4275)  
 #endif  
@@ -60,7 +60,7 @@ Boost_NO_BOOST_CMAKE -- 如果在编译过程中（通常是Unix类系统）遇�
 ```
 3. [OpenSSL](http://www.openssl.org)：该包并未包含OpenSSL，但是会自动搜索系统中的OpenSSL库（具体参见FindOpenSSL.cmake）。如果找到，则会定义**MONGO_SSL**宏以支持SSL。
 4. RCString类：在文件*mongo/util/intrusive_counter.h*中，重载了*operator new()*和*operator delete()*函数，由于参数不一致，VC会给出C4291的警告，但是该函数在GCC 4.8中正常（两参数的*operator delete()*在GCC 4.8下会报错）。因此修改为如下：
-```  
+```
 #if defined(_MSC_VER)  
     void operator delete (void* ptr, size_t realSize) ...  
 #else  
@@ -68,7 +68,7 @@ Boost_NO_BOOST_CMAKE -- 如果在编译过程中（通常是Unix类系统）遇�
 #endif  
 ```
 5. VC警告：在VC下编译，VC会给出这些警告C4996、C4800、C4244，这些警告在包中设置为禁止提示。还有C4251、C4275，这两个警告只在生成DLL时出现。其中，前一个警告表示类中的某些成员的类型并未在任何DLL中导出，这些类通常都是C++标准库中的模板类，该警告也在包中设置为禁止提示；后一个警告表示该类从DLL中导出，但是其某个基类并未在任何DLL中被导出，这些类都是从::boost::noncopyable继承过来的，用于禁止这些类的拷贝，该警告在源代码中采用如下方式来禁止提示：
-```  
+```
 #if defined(_MSC_VER)  
 #pragma warning(disable: 4275)  
 #endif  
